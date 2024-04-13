@@ -42,7 +42,7 @@ const createUserCollection = async () => {
     await auth.currentUser.reload()
     const usersCollection = collection(db, 'users')
     const userDoc = doc(usersCollection, auth.currentUser.uid)
-    await setDoc(userDoc, { workspace: [] })
+    await setDoc(userDoc, { workspace: {} })
 }
 
 const setEdited = (value: boolean) => {

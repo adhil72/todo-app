@@ -42,3 +42,8 @@ body {
   background-color: lightgrey;
   color: blueviolet;
 }
+
+.hover-expand:hover {
+  transition: all 0.3s;
+  scale: 1.03;
+}
