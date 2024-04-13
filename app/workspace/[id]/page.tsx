@@ -23,25 +23,28 @@ export default function Index() {
         saveBoard(boards)
     }
 
-    useEffect(() => {
-        console.log('changed');
-
-    }, boards)
-
     const arrangeId1AboveId2 = (id1: string, id2: string, boardId: string) => {
-        const boardIndex = boards.findIndex((b) => b.id === boardId)
-        const board = boards[boardIndex]
-        const taskIndex1 = board.tasks.findIndex((t) => t.id === id1)
-        const taskIndex2 = board.tasks.findIndex((t) => t.id === id2)
-        const task1 = board.tasks[taskIndex1]
-        const task2 = board.tasks[taskIndex2]
-        board.tasks[taskIndex1] = task2
-        board.tasks[taskIndex2] = task1
-        const newBoards = [...boards]
-        newBoards[boardIndex] = board
-        setBoards(newBoards)             
-        // saveBoard(newBoards)
+
     }
+
+    const changeBoardOfTask = (taskId: string, from: string,to:string) => {
+        const fromBoardIndex = boards.findIndex((b) => b.id === from)
+        const toBoardIndex = boards.findIndex((b) => b.id === to)
+        const fromBoard = boards[fromBoardIndex]
+        const toBoard = boards[toBoardIndex]
+        const taskIndex = fromBoard.tasks.findIndex((t) => t.id === taskId)
+        const task = fromBoard.tasks[taskIndex]
+        fromBoard.tasks.splice(taskIndex, 1)
+        toBoard.tasks.push(task)
+        setBoards((prev) => {
+            const newBoards = [...prev]
+            newBoards[fromBoardIndex] = fromBoard
+            newBoards[toBoardIndex] = toBoard
+            return newBoards
+        })
+        // saveBoard(boards)
+    }
+
 
     const createNewTask = (boardId: string) => {
         let sampleTask: TaskItemProps = {
@@ -84,7 +87,6 @@ export default function Index() {
             fetchBoard().then((data) => {
                 setBoards(data || [])
             })
-            return
         }
     }, [params.id])
 
@@ -94,7 +96,8 @@ export default function Index() {
                 arrangeId1AboveId2,
                 createNewBoard,
                 createNewTask,
-                editTask
+                editTask,
+                changeBoardOfTask
             },
             states: {
                 boards,

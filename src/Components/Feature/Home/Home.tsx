@@ -18,8 +18,6 @@ export default function Home() {
 
     const { states: { boards, workspace, setBoards }, functions: { createNewBoard } } = useContext(HomeContext)
 
-   
-
     return (
         <Page style={{ background: "white!important", "height": "fit-content" }}>
             <Line vertical={true} />
@@ -42,7 +40,7 @@ export default function Home() {
             <div style={{ padding: "10px" }}>
                 <div style={{ width: "100%", display: "flex", overflowX: "auto" }}>
                     {
-                        boards && boards.filter((b) => b.workspaceId === workspace).map((board, i) => {
+                        boards.filter((b) => b.workspaceId === workspace).map((board, i) => {
                             return <TaskPanel id={board.id} tasks={board.tasks} theme="red" title={board.title} />
                         })
                     }

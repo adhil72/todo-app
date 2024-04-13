@@ -15,7 +15,8 @@ export interface HomeContextType {
         arrangeId1AboveId2: (id1: string, id2: string, boardId: string) => void,
         createNewBoard: () => void,
         createNewTask: (boardId: string) => void,
-        editTask: (task: TaskItemProps, boardId: string) => void
+        editTask: (task: TaskItemProps, boardId: string) => void,
+        changeBoardOfTask: (taskId: string, from: string, to: string) => void
     }
 }
 
@@ -24,7 +25,8 @@ const initialState: HomeContextType = {
         arrangeId1AboveId2: () => { },
         createNewBoard: () => { },
         createNewTask: () => { },
-        editTask: () => { }
+        editTask: () => { },
+        changeBoardOfTask: () => { }
     },
     states: {
         draggingItem: 1,

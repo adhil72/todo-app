@@ -19,10 +19,17 @@ export interface BoardProps {
 }
 export default function TaskPanel({ theme, title, tasks, id }: props) {
 
-    const { functions: { createNewTask } } = useContext(HomeContext)
+    const { functions: { createNewTask, changeBoardOfTask } } = useContext(HomeContext)
+
+    const onDrop = (e: any) => {
+        e.preventDefault();
+        const task = e.dataTransfer.getData("task");
+        const board = e.dataTransfer.getData("board");
+        changeBoardOfTask(task, board, id)
+    }
 
     return (
-        <div style={{ flex: "0 0 auto", minWidth: "300px", maxWidth: "300px", borderRadius: "5px", margin: "0 5px" }}>
+        <div onDrop={onDrop} onDragOver={(e) => e.preventDefault()} style={{ flex: "0 0 auto", minWidth: "300px", maxWidth: "300px", borderRadius: "5px", margin: "0 5px" }}>
             <div draggable style={{ width: "100%", display: "flex", alignItems: "center", background: "#ffc1bd" }}>
                 <Text size={1.2} style={{ margin: "7px" }}>{title}</Text>
             </div>

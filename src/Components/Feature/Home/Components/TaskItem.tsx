@@ -27,49 +27,11 @@ export default function TaskItem(data: TaskItemProps) {
     const { states: { }, functions: { arrangeId1AboveId2, editTask } } = useContext(HomeContext);
 
     useEffect(() => {
-        const draggableDiv: any = document.getElementById(id);
-        if (!draggableDiv) return;
-
-        function addDragAndDropEvents(taskItem: any) {
-            taskItem.addEventListener('dragstart', handleDragStart);
-            taskItem.addEventListener('dragover', handleDragOver);
-            taskItem.addEventListener('drop', handleDrop);
-        }
-
-        function handleDragStart(event: any) {
-            event.target.style.opacity = '0.1';
-            event.target.style.border = '2px dashed blue';
-            event.dataTransfer.setData('id', event.target.id);
-        }
-
-
-        function handleDragOver(event: any) {
-            event.preventDefault(); // Necessary for drop to work
-        }
-
-        function handleDrop(event: any) {
-            event.preventDefault();
-            let t = event.target;
-            while (t.className !== "item") {
-                t = t.parentElement;
-            }
-            let sourceId = event.dataTransfer.getData('id');
-            let targetId = t.id;            
-            arrangeId1AboveId2(sourceId, targetId, boardId || '1');
-        }
-
-        function handleDragEnd(event: any) {
-            event.target.style.opacity = '1';
-            event.target.style.border = '1px solid lightgrey';
-        }
-
-        addDragAndDropEvents(draggableDiv);
-        draggableDiv.addEventListener('dragend', handleDragEnd);
-        return () => {
-            draggableDiv.removeEventListener('dragstart', handleDragStart);
-            draggableDiv.removeEventListener('dragover', handleDragOver);
-            draggableDiv.removeEventListener('drop', handleDrop);
-            draggableDiv.removeEventListener('dragend', handleDragEnd);
+        const div = document.getElementById(id);
+        if(!div) return;
+        div.ondragstart = (e:any) => {
+            e.dataTransfer.setData("task", id);
+            e.dataTransfer.setData("board", boardId);
         }
     }, [ref])
 

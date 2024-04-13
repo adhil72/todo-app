@@ -1,0 +1,48 @@
+[debug] [2024-04-13T16:47:03.295Z] ----------------------------------------------------------------------
+[debug] [2024-04-13T16:47:03.297Z] Command:       /snap/node/8522/bin/node /usr/local/bin/firebase init hosting
+[debug] [2024-04-13T16:47:03.297Z] CLI Version:   13.4.1
+[debug] [2024-04-13T16:47:03.297Z] Platform:      linux
+[debug] [2024-04-13T16:47:03.297Z] Node Version:  v20.12.2
+[debug] [2024-04-13T16:47:03.297Z] Time:          Sat Apr 13 2024 22:17:03 GMT+0530 (India Standard Time)
+[debug] [2024-04-13T16:47:03.297Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-04-13T16:47:03.301Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-04-13T16:47:03.301Z] > authorizing via signed-in user (adhil.mhdk28@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /home/adhil/Desktop/.projects/todo
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2024-04-13T16:47:05.335Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2024-04-13T16:47:06.208Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2024-04-13T16:47:06.208Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project genuine-hold-402015 (My First Project) 
+[info] 
+=== Hosting Setup
+[debug] [2024-04-13T16:47:07.572Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/genuine-hold-402015 [none]
+[debug] [2024-04-13T16:47:08.101Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/genuine-hold-402015 200
+[debug] [2024-04-13T16:47:08.101Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/genuine-hold-402015 {"projectId":"genuine-hold-402015","projectNumber":"578423950604","displayName":"My First Project","name":"projects/genuine-hold-402015","resources":{"hostingSite":"genuine-hold-402015"},"state":"ACTIVE","etag":"1_aee7571a-39aa-4470-b55a-f34f69c08e6c"}
+[debug] [2024-04-13T16:47:34.190Z] Error: Command failed: npx --yes create-next-app@"12 - 14.0" -e hello-world ./ --use-npm --ts
+    at genericNodeError (node:internal/errors:984:15)
+    at wrappedFn (node:internal/errors:538:14)
+    at checkExecSyncError (node:child_process:890:11)
+    at execSync (node:child_process:962:15)
+    at Object.init (/usr/local/lib/node_modules/firebase-tools/lib/frameworks/next/index.js:205:34)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async doSetup (/usr/local/lib/node_modules/firebase-tools/lib/init/features/hosting/index.js:120:13)
+    at async init (/usr/local/lib/node_modules/firebase-tools/lib/init/index.js:37:9)
+[error] 
+[error] Error: An unexpected error has occurred.
