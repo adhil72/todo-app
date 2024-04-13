@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface TextProps {
     children?: React.ReactNode;
@@ -39,20 +39,6 @@ export default function Text({
         setTextValue(e.target.value);
     };
 
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Enter') {
-                handleBlur();
-            }
-        };
-
-        document.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [isEditing]);
-
 
     return (
         <div style={{ ...style }} onClick={(e) => { if (editable) e.stopPropagation() }}>
@@ -71,6 +57,7 @@ export default function Text({
                     value={textValue + ''}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    onKeyUp={(e) => { if (e.key === 'Enter') handleBlur() }}
                     autoFocus
                 />
             ) : (

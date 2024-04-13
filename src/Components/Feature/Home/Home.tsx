@@ -16,7 +16,7 @@ const members = [1, 2, 3, 4, 6, 7, 8, 5, 5, 3, 5, 7, 45, 7, 5]
 
 export default function Home() {
 
-    const { states: { boards }, functions: { createNewBoard } } = useContext(HomeContext)
+    const { states: { boards, workspace }, functions: { createNewBoard } } = useContext(HomeContext)
 
     return (
         <Page style={{ background: "white!important", "height": "fit-content" }}>
@@ -40,7 +40,7 @@ export default function Home() {
             <div style={{ padding: "10px" }}>
                 <div style={{ width: "100%", display: "flex", overflowX: "auto" }}>
                     {
-                        boards.map((board, i) => {
+                        boards.filter((b) => b.workspaceId === workspace).map((board, i) => {
                             return <TaskPanel id={board.id} tasks={board.tasks} theme="red" title={board.title} />
                         })
                     }

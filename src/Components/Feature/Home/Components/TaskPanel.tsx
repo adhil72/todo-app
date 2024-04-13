@@ -15,6 +15,7 @@ export interface BoardProps {
     title: string;
     tasks: TaskItemProps[];
     id: string;
+    workspaceId: string;
 }
 export default function TaskPanel({ theme, title, tasks, id }: props) {
 

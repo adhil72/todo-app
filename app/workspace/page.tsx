@@ -28,7 +28,7 @@ export default function Index() {
 
     const editWorkspace = (id: string, ws: WorkspaceType) => {
         let index = workspaces.findIndex((w) => w.id === id)
-        workspaces[index] = ws
+        workspaces[index] = ws        
         setWorkspaces([...workspaces])
         saveWorkspace(workspaces)
     }

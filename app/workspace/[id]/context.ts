@@ -7,7 +7,9 @@ export interface HomeContextType {
         boards: BoardProps[],
         setBoards: React.Dispatch<React.SetStateAction<BoardProps[]>>,
         draggingItem: any,
-        setDraggingItem: React.Dispatch<React.SetStateAction<any>>
+        setDraggingItem: React.Dispatch<React.SetStateAction<any>>,
+        workspace: string,
+        setWorkspace: React.Dispatch<React.SetStateAction<string>>
     },
     functions: {
         arrangeId1AboveId2: (id1: string, id2: string, boardId: string) => void,
@@ -26,7 +28,9 @@ const initialState: HomeContextType = {
         draggingItem: 1,
         setDraggingItem: () => 2,
         boards: [],
-        setBoards: () => []
+        setBoards: () => [],
+        workspace: "",
+        setWorkspace: () => ""
     }
 }
 

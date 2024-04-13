@@ -7,16 +7,20 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { BoardProps } from "@/Components/Feature/Home/Components/TaskPanel";
 import { v4 } from "uuid"
 import { AppContext } from "../../AppContext";
+import { fetchBoard, saveBoard } from "@/Firebase/db";
+import Page from "@/Components/Common/Page";
+import { CircularProgress } from "@mui/material";
+import { useParams } from "next/navigation";
 export default function Index() {
 
     const [boards, setBoards] = useState<BoardProps[]>([])
     const [draggingItem, setDraggingItem] = useState<any>()
-    const { states: { setProgressing } } = useContext(AppContext)
+    const [workspace, setWorkspace] = useState("")
+    const params = useParams()
 
     const createNewBoard = () => {
-        console.log("Creating new board");
-        
-        setBoards((prev) => [...prev, { title: "New Board", tasks: [], id: v4() }])
+        setBoards((prev) => [...prev, { title: "New Board", tasks: [], id: v4(), workspaceId: workspace }])
+        saveBoard(boards)
     }
 
     const arrangeId1AboveId2 = (id1: string, id2: string, boardId: string) => {
@@ -33,6 +37,7 @@ export default function Index() {
             newBoards[boardIndex] = board
             return newBoards
         })
+        saveBoard(boards)
     }
 
     const createNewTask = (boardId: string) => {
@@ -54,13 +59,18 @@ export default function Index() {
             newBoards[boardIndex] = board
             return newBoards
         })
+        saveBoard(boards)
     }
 
     useEffect(() => {
-        
-    }, [])
-
-
+        if (params.id) {
+            setWorkspace(params.id + '')
+            fetchBoard().then((data) => {
+                setBoards(data || [])
+            })
+            return
+        }
+    }, [params.id])
 
     const contextData: HomeContextType = useMemo(
         () => ({
@@ -74,6 +84,8 @@ export default function Index() {
                 setBoards,
                 draggingItem,
                 setDraggingItem,
+                workspace, 
+                setWorkspace
             }
         }),
         [
@@ -81,9 +93,17 @@ export default function Index() {
             setBoards,
             draggingItem,
             setDraggingItem,
-            createNewBoard
+            createNewBoard,
+            workspace, 
+            setWorkspace
         ]
     )
+
+    if (workspace === "") {
+        return <Page style={{ display: 'flex', alignItems: 'center', justifyContent: "center" }}>
+            <CircularProgress />
+        </Page>
+    }
 
     return <HomeContext.Provider value={contextData}>
         <Home />
