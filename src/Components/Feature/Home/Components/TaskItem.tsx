@@ -4,6 +4,7 @@ import { Divider } from "@mui/material";
 import { useContext, useEffect, useRef, useState } from "react";
 import "./TaskItem.css";
 import { HomeContext } from "../../../../../app/workspace/[id]/context";
+import Paragraph from "@/Components/Common/Paragraph";
 export interface TaskItemProps {
     title: string;
     description: string;
@@ -16,12 +17,14 @@ export interface TaskItemProps {
     boardId?: string;
 }
 
-export default function TaskItem({
-    comments, deadline, description, boardId, tag, theme, title, id
-}: TaskItemProps) {
+export default function TaskItem(data: TaskItemProps) {
 
+    const {
+        comments, deadline, description, boardId, tag, theme, title, id
+    } = data;
     let ref = useRef(null);
-    const { states: { }, functions: { arrangeId1AboveId2 } } = useContext(HomeContext);
+    let editData = { ...data };
+    const { states: { }, functions: { arrangeId1AboveId2, editTask } } = useContext(HomeContext);
 
     useEffect(() => {
         const draggableDiv: any = document.getElementById(id);
@@ -47,12 +50,11 @@ export default function TaskItem({
         function handleDrop(event: any) {
             event.preventDefault();
             let t = event.target;
-            let i = event.srcElement.id
             while (t.className !== "item") {
                 t = t.parentElement;
             }
             let sourceId = event.dataTransfer.getData('id');
-            let targetId = t.id;
+            let targetId = t.id;            
             arrangeId1AboveId2(sourceId, targetId, boardId || '1');
         }
 
@@ -74,12 +76,12 @@ export default function TaskItem({
 
     return <div id={id} className="item" ref={ref} draggable style={{ border: "solid 1px", borderColor: "lightgrey", borderRadius: "7px", marginTop: "5px", cursor: "grab" }}>
         <div style={{ paddingLeft: "20px", paddingRight: "20px", paddingTop: "20px" }}>
-            <Text size={1.3} bold={true}>{title.slice(0, 20)}{title.length > 20 ? "..." : ""}</Text>
-            <div style={{ marginTop: "5px", width: '100%', color: "grey", textJustify: "auto", maxHeight: "50px", overflow: "hidden" }}>{description.slice(0, 40)}{description.length > 40 ? "..." : ""}</div>
+            <Text onChanged={(change) => { editData.title = change; editTask(editData, boardId + '') }} editable size={1.3} bold={true}>{title.slice(0, 20)}{title.length > 20 ? "..." : ""}</Text>
+            <Paragraph onChanged={(change) => { editData.description = change; editTask(editData, boardId + '') }} editable style={{ marginTop: "5px", width: '100%', color: "grey", textJustify: "auto", maxHeight: "50px", overflow: "hidden" }}>{description.slice(0, 40)}{description.length > 40 ? "..." : ""}</Paragraph>
         </div>
         <div style={{ display: "flex", justifyContent: 'space-between', alignItems: 'center', paddingLeft: "20px", paddingRight: "20px", paddingTop: "20px" }}>
             <div style={{ padding: "5px", fontWeight: "bold", borderRadius: "7px" }} className={tag.split(":::")[0]}>{tag.split(":::")[1]}</div>
-            <circle style={{ width: "1.5rem", height: "1.5rem", borderRadius: "100%" }} className={theme}></circle>
+            <div style={{ width: "1.5rem", height: "1.5rem", borderRadius: "100%" }} className={theme}></div>
         </div>
         <Divider sx={{ mt: "20px" }} />
         <div style={{ padding: "10px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>

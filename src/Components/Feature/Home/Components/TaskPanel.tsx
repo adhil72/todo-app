@@ -23,7 +23,7 @@ export default function TaskPanel({ theme, title, tasks, id }: props) {
 
     return (
         <div style={{ flex: "0 0 auto", minWidth: "300px", maxWidth: "300px", borderRadius: "5px", margin: "0 5px" }}>
-            <div style={{ width: "100%", display: "flex", alignItems: "center", background: "#ffc1bd" }}>
+            <div draggable style={{ width: "100%", display: "flex", alignItems: "center", background: "#ffc1bd" }}>
                 <Text size={1.2} style={{ margin: "7px" }}>{title}</Text>
             </div>
             <Divider sx={{ background: theme, height: "3px" }} />

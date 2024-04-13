@@ -6,7 +6,7 @@ import ProfileImage from "@/Components/Feature/ProfileImage/ProfileImage";
 import { Divider } from "@mui/material";
 import { CalendarMonth, CalendarMonthOutlined, CommentOutlined } from "@mui/icons-material";
 import TaskPanel from "./Components/TaskPanel";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TaskItemProps } from "./Components/TaskItem";
 import Button from "@/Components/Common/Button";
 import Input from "@/Components/Common/Input";
@@ -16,7 +16,9 @@ const members = [1, 2, 3, 4, 6, 7, 8, 5, 5, 3, 5, 7, 45, 7, 5]
 
 export default function Home() {
 
-    const { states: { boards, workspace }, functions: { createNewBoard } } = useContext(HomeContext)
+    const { states: { boards, workspace, setBoards }, functions: { createNewBoard } } = useContext(HomeContext)
+
+   
 
     return (
         <Page style={{ background: "white!important", "height": "fit-content" }}>
@@ -40,7 +42,7 @@ export default function Home() {
             <div style={{ padding: "10px" }}>
                 <div style={{ width: "100%", display: "flex", overflowX: "auto" }}>
                     {
-                        boards.filter((b) => b.workspaceId === workspace).map((board, i) => {
+                        boards && boards.filter((b) => b.workspaceId === workspace).map((board, i) => {
                             return <TaskPanel id={board.id} tasks={board.tasks} theme="red" title={board.title} />
                         })
                     }

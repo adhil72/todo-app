@@ -23,6 +23,11 @@ export default function Index() {
         saveBoard(boards)
     }
 
+    useEffect(() => {
+        console.log('changed');
+
+    }, boards)
+
     const arrangeId1AboveId2 = (id1: string, id2: string, boardId: string) => {
         const boardIndex = boards.findIndex((b) => b.id === boardId)
         const board = boards[boardIndex]
@@ -32,12 +37,10 @@ export default function Index() {
         const task2 = board.tasks[taskIndex2]
         board.tasks[taskIndex1] = task2
         board.tasks[taskIndex2] = task1
-        setBoards((prev) => {
-            const newBoards = [...prev]
-            newBoards[boardIndex] = board
-            return newBoards
-        })
-        saveBoard(boards)
+        const newBoards = [...boards]
+        newBoards[boardIndex] = board
+        setBoards(newBoards)             
+        // saveBoard(newBoards)
     }
 
     const createNewTask = (boardId: string) => {
@@ -62,6 +65,19 @@ export default function Index() {
         saveBoard(boards)
     }
 
+    const editTask = (task: TaskItemProps, boardId: string) => {
+        const boardIndex = boards.findIndex((b) => b.id === boardId)
+        const board = boards[boardIndex]
+        const taskIndex = board.tasks.findIndex((t) => t.id === task.id)
+        board.tasks[taskIndex] = task
+        setBoards((prev) => {
+            const newBoards = [...prev]
+            newBoards[boardIndex] = board
+            return newBoards
+        })
+        saveBoard(boards)
+    }
+
     useEffect(() => {
         if (params.id) {
             setWorkspace(params.id + '')
@@ -77,14 +93,15 @@ export default function Index() {
             functions: {
                 arrangeId1AboveId2,
                 createNewBoard,
-                createNewTask
+                createNewTask,
+                editTask
             },
             states: {
                 boards,
                 setBoards,
                 draggingItem,
                 setDraggingItem,
-                workspace, 
+                workspace,
                 setWorkspace
             }
         }),
@@ -94,7 +111,7 @@ export default function Index() {
             draggingItem,
             setDraggingItem,
             createNewBoard,
-            workspace, 
+            workspace,
             setWorkspace
         ]
     )
