@@ -5,7 +5,6 @@ import { IconButton } from "@mui/material";
 import { Logout, PersonRounded } from "@mui/icons-material";
 import { auth } from "@/Firebase/config";
 import { useContext } from "react";
-import { HomeContext } from "../../../../app/workspace/[id]/context";
 import { AppContext } from "../../../../app/AppContext";
 
 export default function AppBar() {
