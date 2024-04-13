@@ -1,6 +1,6 @@
 import {initializeApp} from 'firebase/app';
-import {getFirestore} from 'firebase/firestore/lite';
-import {getAuth,RecaptchaVerifier} from 'firebase/auth';
+import {getFirestore} from 'firebase/firestore';
+import {getAuth} from 'firebase/auth';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCYR3NpOpxZHZDnag6aKFKNct2A59LYpbw",

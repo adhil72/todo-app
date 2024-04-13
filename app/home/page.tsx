@@ -3,28 +3,27 @@
 import { TaskItemProps } from "@/Components/Feature/Home/Components/TaskItem";
 import { HomeContext, HomeContextType } from "./context";
 import Home from "@/Components/Feature/Home/Home";
-import { useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { BoardProps } from "@/Components/Feature/Home/Components/TaskPanel";
-
+import { logoutService } from "@/Firebase/functions";
+import { setEdited, setBoardsController, sync } from "@/Firebase/db";
+import { v4 } from "uuid"
+import { AppContext } from "../AppContext";
 export default function Index() {
 
-    const [boards, setBoards] = useState<BoardProps[]>([
-        {
-            title: "Todo", tasks: [
-
-                { id: "de12ed2ftc", title: "Create login page", comments: 0, deadline: new Date().toString(), description: "Hello tester", priority: "high", tag: "testing", theme: "red" },
-                { id: "dqw3289*(", title: "Make the home page responsive", comments: 0, deadline: new Date().toString(), description: "Hello tester", priority: "high", tag: "testing", theme: "red" },
-                { id: "asn8*(*(", title: "Bug fix", comments: 0, deadline: new Date().toString(), description: "Hello tester", priority: "high", tag: "testing", theme: "red" }
-
-            ], id: "1"
-        },
-        { title: "In Progress", tasks: [], id: "2" },
-        { title: "Done", tasks: [], id: "3" }
-    ])
+    const [boards, setBoards] = useState<BoardProps[]>([])
     const [draggingItem, setDraggingItem] = useState<any>()
+    // const [fetched, setFetched] = useState(false)
+    const { states: { setProgressing } } = useContext(AppContext)
+
+    const onChanges = () => {
+        setBoardsController(boards)
+        setEdited(true)
+    }
 
     const createNewBoard = () => {
-        setBoards((prev) => [...prev, { title: "New Board", tasks: [], id: Math.random().toString() }])
+        setBoards((prev) => [...prev, { title: "New Board", tasks: [], id: v4() }])
+        onChanges()
     }
 
     const arrangeId1AboveId2 = (id1: string, id2: string, boardId: string) => {
@@ -41,11 +40,12 @@ export default function Index() {
             newBoards[boardIndex] = board
             return newBoards
         })
+        onChanges()
     }
 
     const createNewTask = (boardId: string) => {
         let sampleTask: TaskItemProps = {
-            id: Math.random().toString(),
+            id: v4(),
             title: "New Task",
             comments: 0,
             deadline: new Date().toString(),
@@ -62,7 +62,24 @@ export default function Index() {
             newBoards[boardIndex] = board
             return newBoards
         })
+        onChanges()
     }
+
+    const logout = () => {
+        logoutService().then((done) => {
+            window.location.href = "/"
+        })
+    }
+
+    useEffect(() => {
+        setProgressing(true)
+        sync().then((boards) => {
+            setBoards(boards)
+        }).finally(() => {
+            setProgressing(false)
+        })
+    }, [])
+
 
 
     const contextData: HomeContextType = useMemo(
@@ -70,7 +87,8 @@ export default function Index() {
             functions: {
                 arrangeId1AboveId2,
                 createNewBoard,
-                createNewTask
+                createNewTask,
+                logout
             },
             states: {
                 boards,
