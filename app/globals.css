@@ -1,4 +1,44 @@
-body{
+body {
   margin: 0;
   font-family: "Roboto", sans-serif;
+}
+
+.green {
+  background-color: rgba(0, 128, 0, 0.2);
+  color: rgb(0, 87, 0);
+}
+
+.blue {
+  background-color: rgba(0, 113, 154, 0.2);
+  color: rgb(0, 71, 97);
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f100;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.clickable {
+  cursor: pointer;
+  border: 1px solid lightgrey;
+  color: blue;
+  border-radius: 5px;
+}
+
+.clickable:hover {
+  background-color: lightgrey;
+  color: blueviolet;
 }

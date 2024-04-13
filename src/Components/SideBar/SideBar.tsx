@@ -21,10 +21,10 @@ export default function SideBar(){
 
     return <div style={{width:"100%",height:"100vh",background:"#ffffff",}}>
         <div style={{padding:"20px"}}>
-            <Text bold={true} size={1.8}>TODO</Text>
+            <Text bold={true} size={1.8} style={{color:"black"}}>TODO</Text>
         </div>
 
-        <Line vertical={false}/>
+        <Line vertical={false} size={15}/>
 
         <div style={{padding:"20px"}}>
             {
@@ -37,7 +37,7 @@ export default function SideBar(){
             }
         </div>
 
-        <Line vertical={false}/>
+        <Line vertical={false} size={15}/>
 
         <div style={{padding:"20px"}}>
             <Text size={1} bold={true} color={"#94A3B8"}>Workspace</Text>

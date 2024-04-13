@@ -31,7 +31,7 @@ export default function AppLayout({ children }: PropsWithChildren<{}>) {
 
     return (
         <AppContext.Provider value={contextData}>
-            <Page>
+            <Page style={{ background: "white" }}>
                 {progressing && (
                     <LinearProgress
                         style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1 }}
