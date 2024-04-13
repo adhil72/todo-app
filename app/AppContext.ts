@@ -4,24 +4,22 @@ import { createContext } from "react";
 export interface AppContextType {
     functions: {
         showMessage: (message: string) => void,
+        logout: () => void
     },
     states: {
         setProgressing: (progressing: boolean) => void,
-        progressing: boolean,
-        workspaces: any,
-        setWorkspaces: any
+        progressing: boolean
     }
 }
 
 const initialState: AppContextType = {
     functions: {
-        showMessage: () => { }
+        showMessage: () => { },
+        logout: () => { }
     },
     states: {
         setProgressing: () => { },
-        progressing: false,
-        workspaces: [],
-        setWorkspaces: () => { }
+        progressing: false
     }
 }
 

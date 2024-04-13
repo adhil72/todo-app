@@ -5,11 +5,12 @@ import { IconButton } from "@mui/material";
 import { Logout, PersonRounded } from "@mui/icons-material";
 import { auth } from "@/Firebase/config";
 import { useContext } from "react";
-import { HomeContext } from "../../../../app/home/context";
+import { HomeContext } from "../../../../app/workspace/[id]/context";
+import { AppContext } from "../../../../app/AppContext";
 
 export default function AppBar() {
 
-    const { functions: { logout } } = useContext(HomeContext)
+    const { functions: { logout } } = useContext(AppContext)
 
     return <div style={{ background: "white!important" }}>
         <div style={{ padding: "20px", display: "flex", justifyContent: "right", alignItems: 'center' }}>

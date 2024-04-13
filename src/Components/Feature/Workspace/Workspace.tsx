@@ -7,6 +7,7 @@ import ProfileImage from "../ProfileImage/ProfileImage";
 import { useContext } from "react";
 import { WorkspaceContext } from "../../../../app/workspace/context";
 import Button from "@/Components/Common/Button";
+import Paragraph from "@/Components/Common/Paragraph";
 
 export interface WorkspaceType {
     title: string;
@@ -16,7 +17,7 @@ export interface WorkspaceType {
 }
 export default function Workspace() {
 
-    const { states: { workspaces }, functions: { createWorkspace } } = useContext(WorkspaceContext)
+    const { states: { workspaces }, functions: { createWorkspace, editWorkspace, openWorkspace } } = useContext(WorkspaceContext)
 
     return (
         <Page style={{ background: "white" }}>
@@ -32,11 +33,13 @@ export default function Workspace() {
             </div>
             <Grid rowSpacing={2} columnSpacing={2} container style={{ padding: "30px" }}>
                 {
-                    Object.keys(workspaces).map((id: string) => {
-                        const ws = workspaces[id as any] as WorkspaceType
+                    workspaces.map((ws) => {
+                        let id = ws.id
                         return <Grid item lg={3} md={4} sm={6} xs={12}>
-                            <div className="hover-expand" style={{ background: "#f2f2f2", padding: "15px", borderRadius: "15px", cursor: "pointer" }}>
-                                <Text size={1.5} bold={true} style={{ overflow: "hidden" }}>{ws.title}</Text>
+                            <div onClick={() => openWorkspace(id)} className="hover-expand" style={{ background: "#f2f2f2", padding: "15px", borderRadius: "15px", cursor: "pointer" }}>
+                                <Text onChanged={(change) => {
+                                    ws["title"] = change; editWorkspace(id, ws)
+                                }} size={1.5} bold={true} style={{ overflow: "hidden", cursor: "text" }} editable>{ws.title}</Text>
                                 <p style={{ fontSize: "1rem", color: "grey", width: "100%", wordWrap: "break-word", overflow: 'hidden', height: "2rem" }}>{ws.description}</p>
                                 <Text size={1.2} bold={true} style={{ overflow: "hidden" }}>Members</Text>
                                 <ProfileImage size={2.4} />

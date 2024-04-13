@@ -2,8 +2,8 @@ import Text from "@/Components/Common/Text";
 import { CalendarMonthOutlined, CommentOutlined } from "@mui/icons-material";
 import { Divider } from "@mui/material";
 import { useContext, useEffect, useRef, useState } from "react";
-import { HomeContext } from "../../../../../app/home/context";
 import "./TaskItem.css";
+import { HomeContext } from "../../../../../app/workspace/[id]/context";
 export interface TaskItemProps {
     title: string;
     description: string;

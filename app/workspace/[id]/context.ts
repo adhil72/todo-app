@@ -12,8 +12,7 @@ export interface HomeContextType {
     functions: {
         arrangeId1AboveId2: (id1: string, id2: string, boardId: string) => void,
         createNewBoard: () => void,
-        createNewTask: (boardId: string) => void,
-        logout: () => void
+        createNewTask: (boardId: string) => void
     }
 }
 
@@ -21,8 +20,7 @@ const initialState: HomeContextType = {
     functions: {
         arrangeId1AboveId2: () => { },
         createNewBoard: () => { },
-        createNewTask: () => { },
-        logout: () => { }
+        createNewTask: () => { }
     },
     states: {
         draggingItem: 1,

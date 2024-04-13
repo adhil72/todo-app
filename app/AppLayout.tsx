@@ -5,7 +5,7 @@ import { CircularProgress, LinearProgress, Snackbar } from "@mui/material";
 import Page from "@/Components/Common/Page";
 import SideBar from "@/Components/SideBar/SideBar";
 import { AppContext, AppContextType } from "./AppContext";
-import { getUserDetails } from "@/Firebase/functions";
+import { getUserDetails, logoutService } from "@/Firebase/functions";
 import { WorkspaceType } from "@/Components/Feature/Workspace/Workspace";
 
 export default function AppLayout({ children }: PropsWithChildren<{}>) {
@@ -13,26 +13,29 @@ export default function AppLayout({ children }: PropsWithChildren<{}>) {
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
     const [snackbarMessage, setSnackbarMessage] = useState<string>("");
     const [fetched, setFetched] = useState(false)
-    const [workspaces, setWorkspaces] = useState<{}>({})
 
     const showMessage = (message: string) => {
         setSnackbarMessage(message);
         setOpenSnackbar(true);
     };
 
+    const logout = () => {
+        logoutService().then((done) => {
+            window.location.href = "/"
+        })
+    }
+
     const contextData: AppContextType = useMemo(
         () => ({
             functions: {
-                showMessage,
+                showMessage, logout
             },
             states: {
                 setProgressing,
-                progressing,
-                workspaces,
-                setWorkspaces
+                progressing
             },
         }),
-        [setProgressing, progressing, showMessage]
+        [setProgressing, progressing, showMessage, logout]
     );
 
     useEffect(() => {

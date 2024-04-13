@@ -3,7 +3,9 @@ import { createContext } from "react"
 
 export interface WorkspaceContextType {
     functions: {
-        createWorkspace: any
+        createWorkspace: any,
+        editWorkspace: any,
+        openWorkspace: any
     },
     states: {
         workspaces: WorkspaceType[],
@@ -13,7 +15,9 @@ export interface WorkspaceContextType {
 
 const initialData: WorkspaceContextType = {
     functions: {
-        createWorkspace: () => { }
+        createWorkspace: () => { },
+        editWorkspace: () => { },
+        openWorkspace: () => { }
     },
     states: {
         setWorkspaces: () => { },

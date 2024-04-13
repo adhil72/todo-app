@@ -1,14 +1,13 @@
 import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "./config";
-import { useContext } from "react";
-import { AppContext } from "../../app/AppContext";
+import { WorkspaceType } from "@/Components/Feature/Workspace/Workspace";
 
-let data: any = []
 let edited = false
 let syncing = false
 
-const sync = async () => {
+const fetchWorkSpace = async () => {
     let pb = document.getElementById("pb")
+    let data = []
     if (pb) pb.style.display = "block"
     if (!auth.currentUser) return
     const usersCollection = collection(db, 'users')
@@ -26,13 +25,13 @@ const sync = async () => {
     return data
 }
 
-const saveBoards = async () => {
+const saveWorkspace = async (workspaceData: WorkspaceType[]) => {
     let pb = document.getElementById("pb")
     if (pb) pb.style.display = "block"
     if (!auth.currentUser) return
     const usersCollection = collection(db, 'users')
     const userDoc = doc(usersCollection, auth.currentUser.uid)
-    await setDoc(userDoc, { workspace: data })
+    await setDoc(userDoc, { workspace: workspaceData })
     if (pb) pb.style.display = "none"
     return
 }
@@ -45,21 +44,4 @@ const createUserCollection = async () => {
     await setDoc(userDoc, { workspace: {} })
 }
 
-const setEdited = (value: boolean) => {
-    edited = value
-    if (edited === true && syncing === false) {
-        syncing = true
-        edited = false
-        saveBoards().then(() => {
-            syncing = false
-            if (edited === true) setEdited(true)
-        })
-
-    }
-}
-
-const setDataController = (boards: any) => {
-    data = boards
-}
-
-export { sync, saveBoards, createUserCollection, setEdited, setDataController }
+export { fetchWorkSpace, createUserCollection, saveWorkspace }

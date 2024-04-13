@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-interface TextProps {
+interface ParagraphProps {
     children?: React.ReactNode;
     style?: React.CSSProperties;
     size?: number;
@@ -10,7 +10,7 @@ interface TextProps {
     onChanged?: (value: string) => void; // Add the onChanged prop
 }
 
-export default function Text({
+export default function Paragraph({
     children,
     style,
     size = 1,
@@ -18,7 +18,7 @@ export default function Text({
     color,
     editable = false,
     onChanged, // Add the onChanged prop to the function arguments
-}: TextProps) {
+}: ParagraphProps) {
     const [isEditing, setIsEditing] = useState(false);
     const [textValue, setTextValue] = useState(children);
 
@@ -55,7 +55,7 @@ export default function Text({
 
 
     return (
-        <div style={{ ...style }} onClick={(e) => { if (editable) e.stopPropagation() }}>
+        <div style={{ ...style }} onClick={(e) => e.stopPropagation()}>
             {isEditing ? (
                 <input
                     style={{
@@ -74,7 +74,7 @@ export default function Text({
                     autoFocus
                 />
             ) : (
-                <span
+                <p
                     style={{
                         ...style,
                         color: color,
@@ -84,7 +84,7 @@ export default function Text({
                     onDoubleClick={handleDoubleClick}
                 >
                     {textValue}
-                </span>
+                </p>
             )}
         </div>
     );

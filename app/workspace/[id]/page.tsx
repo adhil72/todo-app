@@ -5,25 +5,18 @@ import { HomeContext, HomeContextType } from "./context";
 import Home from "@/Components/Feature/Home/Home";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { BoardProps } from "@/Components/Feature/Home/Components/TaskPanel";
-import { logoutService } from "@/Firebase/functions";
-import { setEdited, setBoardsController, sync } from "@/Firebase/db";
 import { v4 } from "uuid"
-import { AppContext } from "../AppContext";
+import { AppContext } from "../../AppContext";
 export default function Index() {
 
     const [boards, setBoards] = useState<BoardProps[]>([])
     const [draggingItem, setDraggingItem] = useState<any>()
-    // const [fetched, setFetched] = useState(false)
     const { states: { setProgressing } } = useContext(AppContext)
 
-    const onChanges = () => {
-        setBoardsController(boards)
-        setEdited(true)
-    }
-
     const createNewBoard = () => {
+        console.log("Creating new board");
+        
         setBoards((prev) => [...prev, { title: "New Board", tasks: [], id: v4() }])
-        onChanges()
     }
 
     const arrangeId1AboveId2 = (id1: string, id2: string, boardId: string) => {
@@ -40,7 +33,6 @@ export default function Index() {
             newBoards[boardIndex] = board
             return newBoards
         })
-        onChanges()
     }
 
     const createNewTask = (boardId: string) => {
@@ -62,22 +54,10 @@ export default function Index() {
             newBoards[boardIndex] = board
             return newBoards
         })
-        onChanges()
-    }
-
-    const logout = () => {
-        logoutService().then((done) => {
-            window.location.href = "/"
-        })
     }
 
     useEffect(() => {
-        setProgressing(true)
-        sync().then((boards) => {
-            setBoards(boards)
-        }).finally(() => {
-            setProgressing(false)
-        })
+        
     }, [])
 
 
@@ -87,8 +67,7 @@ export default function Index() {
             functions: {
                 arrangeId1AboveId2,
                 createNewBoard,
-                createNewTask,
-                logout
+                createNewTask
             },
             states: {
                 boards,

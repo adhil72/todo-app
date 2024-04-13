@@ -8,9 +8,9 @@ import { CalendarMonth, CalendarMonthOutlined, CommentOutlined } from "@mui/icon
 import TaskPanel from "./Components/TaskPanel";
 import { useContext, useState } from "react";
 import { TaskItemProps } from "./Components/TaskItem";
-import { HomeContext } from "../../../../app/home/context";
 import Button from "@/Components/Common/Button";
 import Input from "@/Components/Common/Input";
+import { HomeContext } from "../../../../app/workspace/[id]/context";
 
 const members = [1, 2, 3, 4, 6, 7, 8, 5, 5, 3, 5, 7, 45, 7, 5]
 
