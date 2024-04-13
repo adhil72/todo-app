@@ -6,12 +6,14 @@ import Page from "@/Components/Common/Page";
 import SideBar from "@/Components/SideBar/SideBar";
 import { AppContext, AppContextType } from "./AppContext";
 import { getUserDetails } from "@/Firebase/functions";
+import { WorkspaceType } from "@/Components/Feature/Workspace/Workspace";
 
 export default function AppLayout({ children }: PropsWithChildren<{}>) {
     const [progressing, setProgressing] = useState<boolean>(true);
     const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
     const [snackbarMessage, setSnackbarMessage] = useState<string>("");
     const [fetched, setFetched] = useState(false)
+    const [workspaces, setWorkspaces] = useState<{}>({})
 
     const showMessage = (message: string) => {
         setSnackbarMessage(message);
@@ -26,6 +28,8 @@ export default function AppLayout({ children }: PropsWithChildren<{}>) {
             states: {
                 setProgressing,
                 progressing,
+                workspaces,
+                setWorkspaces
             },
         }),
         [setProgressing, progressing, showMessage]

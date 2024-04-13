@@ -2,7 +2,9 @@ import { WorkspaceType } from "@/Components/Feature/Workspace/Workspace"
 import { createContext } from "react"
 
 export interface WorkspaceContextType {
-    functions: {},
+    functions: {
+        createWorkspace: any
+    },
     states: {
         workspaces: WorkspaceType[],
         setWorkspaces: any
@@ -10,7 +12,9 @@ export interface WorkspaceContextType {
 }
 
 const initialData: WorkspaceContextType = {
-    functions: {},
+    functions: {
+        createWorkspace: () => { }
+    },
     states: {
         setWorkspaces: () => { },
         workspaces: []

@@ -6,6 +6,7 @@ import { Grid } from "@mui/material";
 import ProfileImage from "../ProfileImage/ProfileImage";
 import { useContext } from "react";
 import { WorkspaceContext } from "../../../../app/workspace/context";
+import Button from "@/Components/Common/Button";
 
 export interface WorkspaceType {
     title: string;
@@ -15,7 +16,7 @@ export interface WorkspaceType {
 }
 export default function Workspace() {
 
-    const { states: { workspaces } } = useContext(WorkspaceContext)
+    const { states: { workspaces }, functions: { createWorkspace } } = useContext(WorkspaceContext)
 
     return (
         <Page style={{ background: "white" }}>
@@ -31,7 +32,8 @@ export default function Workspace() {
             </div>
             <Grid rowSpacing={2} columnSpacing={2} container style={{ padding: "30px" }}>
                 {
-                    workspaces.map((ws) => {
+                    Object.keys(workspaces).map((id: string) => {
+                        const ws = workspaces[id as any] as WorkspaceType
                         return <Grid item lg={3} md={4} sm={6} xs={12}>
                             <div className="hover-expand" style={{ background: "#f2f2f2", padding: "15px", borderRadius: "15px", cursor: "pointer" }}>
                                 <Text size={1.5} bold={true} style={{ overflow: "hidden" }}>{ws.title}</Text>
@@ -42,6 +44,9 @@ export default function Workspace() {
                         </Grid>
                     })
                 }
+                <Grid item lg={3} md={4} sm={6} xs={12} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <Button onClick={createWorkspace} variant="outlined">New workspace</Button>
+                </Grid>
             </Grid>
         </Page>
     );

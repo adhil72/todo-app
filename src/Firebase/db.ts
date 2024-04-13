@@ -3,7 +3,7 @@ import { auth, db } from "./config";
 import { useContext } from "react";
 import { AppContext } from "../../app/AppContext";
 
-let boardsController: any = []
+let data: any = []
 let edited = false
 let syncing = false
 
@@ -19,11 +19,11 @@ const sync = async () => {
     } else {
         const userData = userDocSnap.data()
         if (userData) {
-            boardsController = userData.workspace
+            data = userData.workspace
         }
     }
     if (pb) pb.style.display = "none"
-    return boardsController
+    return data
 }
 
 const saveBoards = async () => {
@@ -32,7 +32,7 @@ const saveBoards = async () => {
     if (!auth.currentUser) return
     const usersCollection = collection(db, 'users')
     const userDoc = doc(usersCollection, auth.currentUser.uid)
-    await setDoc(userDoc, { boards: boardsController })
+    await setDoc(userDoc, { workspace: data })
     if (pb) pb.style.display = "none"
     return
 }
@@ -58,8 +58,8 @@ const setEdited = (value: boolean) => {
     }
 }
 
-const setBoardsController = (boards: any) => {
-    boardsController = boards
+const setDataController = (boards: any) => {
+    data = boards
 }
 
-export { sync, saveBoards, createUserCollection, setEdited, setBoardsController }
+export { sync, saveBoards, createUserCollection, setEdited, setDataController }
