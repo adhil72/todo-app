@@ -40,6 +40,9 @@ export default function AppLayout({ children }: PropsWithChildren<{}>) {
 
     useEffect(() => {
         getUserDetails().then((user) => {
+            if (!user && (window.location.pathname !== "/auth/signin" && window.location.pathname !== "/auth/signup")) {
+                window.location.href = "/auth/signin"
+            }
             setFetched(true)
             setProgressing(false)
         })
@@ -47,6 +50,7 @@ export default function AppLayout({ children }: PropsWithChildren<{}>) {
 
 
     if (!fetched) return <Page style={{ display: 'flex', alignItems: 'center', justifyContent: "center" }}><CircularProgress /></Page>
+    if(window.location.pathname.includes('auth')) return <>{children}</>
     return (
         <AppContext.Provider value={contextData}>
             <Page style={{ background: "white" }}>

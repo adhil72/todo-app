@@ -10,7 +10,7 @@ import { useContext, useEffect, useState } from "react";
 import { TaskItemProps } from "./Components/TaskItem";
 import Button from "@/Components/Common/Button";
 import Input from "@/Components/Common/Input";
-import { HomeContext } from "../../../../app/workspace/[id]/context";
+import { HomeContext } from "../../../../app/[id]/context";
 
 const members = [1, 2, 3, 4, 6, 7, 8, 5, 5, 3, 5, 7, 45, 7, 5]
 

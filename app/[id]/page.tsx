@@ -6,7 +6,6 @@ import Home from "@/Components/Feature/Home/Home";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { BoardProps } from "@/Components/Feature/Home/Components/TaskPanel";
 import { v4 } from "uuid"
-import { AppContext } from "../../AppContext";
 import { fetchBoard, saveBoard } from "@/Firebase/db";
 import Page from "@/Components/Common/Page";
 import { CircularProgress } from "@mui/material";

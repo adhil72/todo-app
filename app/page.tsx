@@ -5,7 +5,6 @@ import { WorkspaceContext, WorkspaceContextType } from "./context";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { v4 } from "uuid";
 import { createUserCollection, fetchWorkSpace, saveWorkspace } from "@/Firebase/db";
-import { AppContext } from "../AppContext";
 import { useRouter } from "next/navigation";
 
 export default function Index() {
@@ -34,7 +33,7 @@ export default function Index() {
     }
 
     const openWorkspace = (id: string) => {
-        nav.push("/workspace/" + id)
+        nav.push("/" + id)
     }
 
     useEffect(() => {

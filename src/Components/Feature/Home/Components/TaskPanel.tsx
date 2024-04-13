@@ -3,7 +3,7 @@ import { Divider } from "@mui/material";
 import TaskItem, { TaskItemProps } from "./TaskItem";
 import Button from "@/Components/Common/Button";
 import { useContext } from "react";
-import { HomeContext } from "../../../../../app/workspace/[id]/context";
+import { HomeContext } from "../../../../../app/[id]/context";
 
 interface props {
     title: string;

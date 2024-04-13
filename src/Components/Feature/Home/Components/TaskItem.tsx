@@ -3,8 +3,8 @@ import { CalendarMonthOutlined, CommentOutlined } from "@mui/icons-material";
 import { Divider } from "@mui/material";
 import { useContext, useEffect, useRef, useState } from "react";
 import "./TaskItem.css";
-import { HomeContext } from "../../../../../app/workspace/[id]/context";
 import Paragraph from "@/Components/Common/Paragraph";
+import { HomeContext } from "../../../../../app/[id]/context";
 export interface TaskItemProps {
     title: string;
     description: string;

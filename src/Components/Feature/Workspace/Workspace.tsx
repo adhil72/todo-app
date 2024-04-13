@@ -5,9 +5,9 @@ import Text from "@/Components/Common/Text";
 import { Grid } from "@mui/material";
 import ProfileImage from "../ProfileImage/ProfileImage";
 import { useContext } from "react";
-import { WorkspaceContext } from "../../../../app/workspace/context";
 import Button from "@/Components/Common/Button";
 import Paragraph from "@/Components/Common/Paragraph";
+import { WorkspaceContext } from "../../../../app/context";
 
 export interface WorkspaceType {
     title: string;
