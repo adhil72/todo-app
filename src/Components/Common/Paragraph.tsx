@@ -55,7 +55,7 @@ export default function Paragraph({
 
 
     return (
-        <div style={{ ...style }} onClick={(e) => e.stopPropagation()}>
+        <div style={{ ...style,cursor:"text" }} onClick={(e) => e.stopPropagation()}>
             {isEditing ? (
                 <input
                     style={{
@@ -74,7 +74,7 @@ export default function Paragraph({
                     autoFocus
                 />
             ) : (
-                <p
+                <div
                     style={{
                         ...style,
                         color: color,
@@ -84,7 +84,7 @@ export default function Paragraph({
                     onDoubleClick={handleDoubleClick}
                 >
                     {textValue}
-                </p>
+                </div>
             )}
         </div>
     );

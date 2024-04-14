@@ -1,130 +1,113 @@
 "use client";
 
-import { TaskItemProps } from "@/Components/Feature/Home/Components/TaskItem";
-import { HomeContext, HomeContextType } from "./context";
+import {HomeContext} from "./context";
 import Home from "@/Components/Feature/Home/Home";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { BoardProps } from "@/Components/Feature/Home/Components/TaskPanel";
-import { v4 } from "uuid"
-import { fetchBoard, saveBoard } from "@/Firebase/db";
+import {useCallback, useEffect, useMemo, useState} from "react";
+import {useParams} from "next/navigation";
+import {CircularProgress} from "@mui/material";
 import Page from "@/Components/Common/Page";
-import { CircularProgress } from "@mui/material";
-import { useParams } from "next/navigation";
+import {BoardProps} from "@/Components/Feature/Home/Components/TaskPanel";
+import {v4} from "uuid";
+import {TaskItemProps} from "@/Components/Feature/Home/Components/TaskItem";
+import {fetchBoard, fetchTask, saveBoard, saveTask} from "@/Firebase/db";
+
 export default function Index() {
 
     const [boards, setBoards] = useState<BoardProps[]>([])
-    const [draggingItem, setDraggingItem] = useState<any>()
+    const [tasks, setTasks] = useState<TaskItemProps[]>([])
     const [workspace, setWorkspace] = useState("")
+    const [fetched, setFetched] = useState(false)
     const params = useParams()
 
-    const createNewBoard = () => {
-        setBoards((prev) => [...prev, { title: "New Board", tasks: [], id: v4(), workspaceId: workspace }])
-        saveBoard(boards)
-    }
-
-    const arrangeId1AboveId2 = (id1: string, id2: string, boardId: string) => {
-
-    }
-
-    const changeBoardOfTask = (taskId: string, from: string,to:string) => {
-        const fromBoardIndex = boards.findIndex((b) => b.id === from)
-        const toBoardIndex = boards.findIndex((b) => b.id === to)
-        const fromBoard = boards[fromBoardIndex]
-        const toBoard = boards[toBoardIndex]
-        const taskIndex = fromBoard.tasks.findIndex((t) => t.id === taskId)
-        const task = fromBoard.tasks[taskIndex]
-        fromBoard.tasks.splice(taskIndex, 1)
-        toBoard.tasks.push(task)
+    const createNewBoard = useCallback(() => {
         setBoards((prev) => {
-            const newBoards = [...prev]
-            newBoards[fromBoardIndex] = fromBoard
-            newBoards[toBoardIndex] = toBoard
-            return newBoards
+            const modified = [...prev, {
+                title: "New Board", tasks: [], id: v4(), workspaceId: workspace
+            }]
+            saveBoard(modified)
+            return modified as any
+        });
+    }, [workspace, setBoards]);
+
+    const createNewTask = useCallback((boardId: string) => {
+        setTasks((prev) => {
+            const modified = [...prev, {
+                title: "New Task",
+                description: "Enter description here",
+                tag: "green:::TAG",
+                theme: "blue",
+                comments: 0,
+                priority: "low",
+                deadline: new Date().toString(),
+                id: v4(),
+                boardId
+            }]
+            saveTask(modified)
+            return modified as any
         })
-        // saveBoard(boards)
-    }
+    }, [])
 
+    const editTask = useCallback((data: TaskItemProps, id: string) => {
+        setTasks((prev) => {
+            let index = prev.findIndex((task) => task.id === id)
+            prev[index] = data
+            saveTask(prev)
+            return prev
+        })
+    }, [])
 
-    const createNewTask = (boardId: string) => {
-        let sampleTask: TaskItemProps = {
-            id: v4(),
-            title: "New Task",
-            comments: 0,
-            deadline: new Date().toString(),
-            description: "Description of the task",
-            priority: "high",
-            tag: "testing",
-            theme: "red"
-        }
-        const boardIndex = boards.findIndex((b) => b.id === boardId)
-        const board = boards[boardIndex]
-        board.tasks.unshift(sampleTask) // Insert new task at the beginning of the array
+    const editBoard = useCallback((id: string, data: BoardProps) => {
         setBoards((prev) => {
-            const newBoards = [...prev]
-            newBoards[boardIndex] = board
-            return newBoards
+            const index = prev.findIndex((board) => board.id === id)
+            prev[index] = data
+            saveBoard(prev)
+            return prev
         })
-        saveBoard(boards)
-    }
+    }, [])
 
-    const editTask = (task: TaskItemProps, boardId: string) => {
-        const boardIndex = boards.findIndex((b) => b.id === boardId)
-        const board = boards[boardIndex]
-        const taskIndex = board.tasks.findIndex((t) => t.id === task.id)
-        board.tasks[taskIndex] = task
-        setBoards((prev) => {
-            const newBoards = [...prev]
-            newBoards[boardIndex] = board
-            return newBoards
+    const changeBoardOfTask = useCallback((taskId: string, boardId: string) => {
+        setTasks((prev) => {
+            const modified = prev.map((task) => {
+                if (task.id === taskId) {
+                    task.boardId = boardId
+                }
+                return task
+            })
+            saveTask(modified)
+            return modified
         })
-        saveBoard(boards)
-    }
+
+    },[])
 
     useEffect(() => {
         if (params.id) {
             setWorkspace(params.id + '')
-            fetchBoard().then((data) => {
-                setBoards(data || [])
+            fetchBoard().then((d) => {
+                setBoards(d || [])
+                fetchTask().then((t) => {
+                    setTasks(t || [])
+                    setFetched(true)
+                })
             })
-        }
-    }, [params.id])
 
-    const contextData: HomeContextType = useMemo(
-        () => ({
-            functions: {
-                arrangeId1AboveId2,
-                createNewBoard,
-                createNewTask,
-                editTask,
-                changeBoardOfTask
-            },
-            states: {
-                boards,
-                setBoards,
-                draggingItem,
-                setDraggingItem,
-                workspace,
-                setWorkspace
-            }
-        }),
-        [
-            boards,
-            setBoards,
-            draggingItem,
-            setDraggingItem,
-            createNewBoard,
-            workspace,
-            setWorkspace
-        ]
-    )
+        }
+    }, [params.id]);
+
+    const contextData: any = useMemo(() => ({
+        functions: {
+            createNewBoard, createNewTask, editTask, editBoard,changeBoardOfTask
+        }, states: {
+            boards, setBoards, tasks, setTasks, workspace, setWorkspace
+        }
+    }), [boards, setBoards, createNewBoard, createNewTask, tasks, setTasks, workspace, setWorkspace, editTask, editBoard,changeBoardOfTask])
 
     if (workspace === "") {
-        return <Page style={{ display: 'flex', alignItems: 'center', justifyContent: "center" }}>
-            <CircularProgress />
+        return <Page style={{display: 'flex', alignItems: 'center', justifyContent: "center"}}>
+            <CircularProgress/>
         </Page>
     }
 
     return <HomeContext.Provider value={contextData}>
-        <Home />
+        <Home/>
     </HomeContext.Provider>
 }

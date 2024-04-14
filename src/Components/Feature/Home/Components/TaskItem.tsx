@@ -26,19 +26,50 @@ export default function TaskItem(data: TaskItemProps) {
     let editData = { ...data };
     const { states: { }, functions: { arrangeId1AboveId2, editTask } } = useContext(HomeContext);
 
-    useEffect(() => {
-        const div = document.getElementById(id);
-        if(!div) return;
-        div.ondragstart = (e:any) => {
-            e.dataTransfer.setData("task", id);
-            e.dataTransfer.setData("board", boardId);
+
+    const onDragStart = (e: any) => {
+        e.dataTransfer.setData("task", id);
+        e.dataTransfer.setData("board", boardId);
+        e.target.style.scale = "1"
+    }
+
+    const onDragEnd = (e: any) => {
+        e.target.style.scale = "1"
+    }
+
+    const onDragOver = (e: any) => {
+        e.preventDefault()
+        let t = e.target
+        while (t.className !== "item") {
+            t = t.parentElement
         }
-    }, [ref])
+        t.style.borderColor = "blue"
+    }
 
+    const onDragExit = (e:any)=>{
+        // e.preventDefault()
+        let t = e.target
+        while (t.className !== "item") {
+            t = t.parentElement
+        }
+        t.style.borderColor = "lightgrey"
+    }
 
-    return <div id={id} className="item" ref={ref} draggable style={{ border: "solid 1px", borderColor: "lightgrey", borderRadius: "7px", marginTop: "5px", cursor: "grab" }}>
+    const onDrop = (e: any) => {
+        // e.preventDefault();
+        let t = e.target
+        while (t.className !== "item") {
+            t = t.parentElement
+        }
+        t.style.scale = "1"
+
+        const task = e.dataTransfer.getData("task");
+        const board = e.dataTransfer.getData("board");
+    }
+
+    return <div onDrop={onDrop} onDragStartCapture={onDragStart} onDragEndCapture={onDragEnd} onDragOverCapture={onDragOver} onDragLeaveCapture={onDragExit} id={id} className="item" ref={ref} draggable style={{ border: "solid 1px",background:"white", borderColor: "lightgrey", borderRadius: "7px", marginTop: "5px", cursor: "grab",transition:"0.3s" }}>
         <div style={{ paddingLeft: "20px", paddingRight: "20px", paddingTop: "20px" }}>
-            <Text onChanged={(change) => { editData.title = change; editTask(editData, boardId + '') }} editable size={1.3} bold={true}>{title.slice(0, 20)}{title.length > 20 ? "..." : ""}</Text>
+            <Text onChanged={(change) => { editData.title = change; editTask(editData, id + '') }} editable size={1.3} bold={true}>{title.slice(0, 20)}{title.length > 20 ? "..." : ""}</Text>
             <Paragraph onChanged={(change) => { editData.description = change; editTask(editData, boardId + '') }} editable style={{ marginTop: "5px", width: '100%', color: "grey", textJustify: "auto", maxHeight: "50px", overflow: "hidden" }}>{description.slice(0, 40)}{description.length > 40 ? "..." : ""}</Paragraph>
         </div>
         <div style={{ display: "flex", justifyContent: 'space-between', alignItems: 'center', paddingLeft: "20px", paddingRight: "20px", paddingTop: "20px" }}>

@@ -41,7 +41,7 @@ export default function Text({
 
 
     return (
-        <div style={{ ...style }} onClick={(e) => { if (editable) e.stopPropagation() }}>
+        <div style={{ ...style,cursor:"text" }} onClick={(e) => { if (editable) e.stopPropagation() }}>
             {isEditing ? (
                 <input
                     style={{
