@@ -1,12 +1,16 @@
 import {createContext} from "react"
 
 export interface SignInContextType{
-    functions:{},
+    functions:{
+        signIn:(email:string, password:string)=>Promise<void>
+    },
     states:any
 }
 
 const initialState:SignInContextType = {
-    functions:{},
+    functions:{
+        signIn:async(email:string, password:string)=>{}
+    },
     states:{}
 }
 

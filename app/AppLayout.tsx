@@ -50,7 +50,21 @@ export default function AppLayout({ children }: PropsWithChildren<{}>) {
 
 
     if (!fetched) return <Page style={{ display: 'flex', alignItems: 'center', justifyContent: "center" }}><CircularProgress /></Page>
-    if(window.location.pathname.includes('auth')) return <>{children}</>
+    if(window.location.pathname.includes('auth')) return <AppContext.Provider value={contextData}>
+        <Page style={{ background: "white" }}>
+            <LinearProgress
+                id="pb"
+                style={{ position: "absolute", top: 0, left: 0, right: 0, zIndex: 1, display: progressing ? "block" : "none" }}
+            />
+            {children}
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={4000}
+                onClose={() => setOpenSnackbar(false)}
+                message={snackbarMessage}
+            />
+        </Page>
+    </AppContext.Provider>
     return (
         <AppContext.Provider value={contextData}>
             <Page style={{ background: "white" }}>
