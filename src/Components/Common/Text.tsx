@@ -8,6 +8,7 @@ interface TextProps {
     color?: string;
     editable?: boolean;
     onChanged?: (value: string) => void; // Add the onChanged prop
+    className?: string;
 }
 
 export default function Text({
@@ -18,6 +19,7 @@ export default function Text({
     color,
     editable = false,
     onChanged, // Add the onChanged prop to the function arguments
+    className
 }: TextProps) {
     const [isEditing, setIsEditing] = useState(false);
     const [textValue, setTextValue] = useState(children);
@@ -41,9 +43,10 @@ export default function Text({
 
 
     return (
-        <div style={{ ...style,cursor:"text" }} onClick={(e) => { if (editable) e.stopPropagation() }}>
+        <div style={{ ...style,cursor:editable?"pointer":"default",overflow:"hidden" }} onClick={(e) => { if (editable) e.stopPropagation() }}>
             {isEditing ? (
                 <input
+                    className={className}
                     style={{
                         ...style,
                         color: color,
@@ -52,6 +55,7 @@ export default function Text({
                         border: 'none',
                         outline: 'none',
                         background: 'none',
+                        width:"fit-content"
                     }}
                     type="text"
                     value={textValue + ''}
@@ -62,6 +66,7 @@ export default function Text({
                 />
             ) : (
                 <span
+                    className={className}
                     style={{
                         ...style,
                         color: color,

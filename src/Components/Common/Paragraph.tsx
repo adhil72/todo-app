@@ -55,7 +55,7 @@ export default function Paragraph({
 
 
     return (
-        <div style={{ ...style,cursor:"text" }} onClick={(e) => e.stopPropagation()}>
+        <div style={{ ...style,cursor:"text",width:"fit-content" }} onClick={(e) => e.stopPropagation()}>
             {isEditing ? (
                 <input
                     style={{
@@ -66,6 +66,7 @@ export default function Paragraph({
                         border: 'none',
                         outline: 'none',
                         background: 'none',
+                        width: 'fit-content',
                     }}
                     type="text"
                     value={textValue + ''}
@@ -80,6 +81,7 @@ export default function Paragraph({
                         color: color,
                         fontSize: `${size}rem`,
                         fontWeight: bold ? 'bold' : 'normal',
+                        width:"fit-content"
                     }}
                     onDoubleClick={handleDoubleClick}
                 >

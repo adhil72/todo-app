@@ -1,7 +1,7 @@
 import {collection, doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
 import {auth, db} from "./config";
 import {WorkspaceType} from "@/Components/Feature/Workspace/Workspace";
-import {BoardProps} from "@/Components/Feature/Home/Components/TaskPanel";
+import {BoardProps} from "@/Components/Feature/Board/Components/TaskPanel";
 
 let edited = false
 let syncing = false

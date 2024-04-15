@@ -1,14 +1,14 @@
 "use client";
 
 import {HomeContext} from "./context";
-import Home from "@/Components/Feature/Home/Home";
+import Board from "@/Components/Feature/Board/Board";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {useParams} from "next/navigation";
 import {CircularProgress} from "@mui/material";
 import Page from "@/Components/Common/Page";
-import {BoardProps} from "@/Components/Feature/Home/Components/TaskPanel";
+import {BoardProps} from "@/Components/Feature/Board/Components/TaskPanel";
 import {v4} from "uuid";
-import {TaskItemProps} from "@/Components/Feature/Home/Components/TaskItem";
+import {TaskItemProps} from "@/Components/Feature/Board/Components/TaskItem";
 import {fetchBoard, fetchTask, saveBoard, saveTask} from "@/Firebase/db";
 
 export default function Index() {
@@ -18,6 +18,8 @@ export default function Index() {
     const [workspace, setWorkspace] = useState("")
     const [fetched, setFetched] = useState(false)
     const params = useParams()
+    const [selectedTask, setSelectedTask] = useState<TaskItemProps>()
+    const [openEditTask, setOpenEditTask] = useState(false)
 
     const createNewBoard = useCallback(() => {
         setBoards((prev) => {
@@ -47,16 +49,29 @@ export default function Index() {
         })
     }, [])
 
-    const editTask = useCallback((data: TaskItemProps, id: string) => {
-        setTasks((prev) => {
-            let index = prev.findIndex((task) => task.id === id)
-            prev[index] = data
-            saveTask(prev)
-            return prev
-        })
+    const editTask = useCallback(async (data: TaskItemProps, id: string,async?:boolean) => {
+        if (async){
+            return new Promise((r)=>{
+                setTasks((prev) => {
+                    let index = prev.findIndex((task) => task.id === id)
+                    prev[index] = data
+                    saveTask(prev).then(()=>{
+                        r(null)
+                    })
+                    return [...prev]
+                })
+            })
+        }else{
+            setTasks((prev) => {
+                let index = prev.findIndex((task) => task.id === id)
+                prev[index] = data
+                saveTask(prev)
+                return [...prev]
+            })
+        }
     }, [])
 
-    const editBoard = useCallback((id: string, data: BoardProps) => {
+    const editBoard = useCallback(async (id: string, data: BoardProps) => {
         setBoards((prev) => {
             const index = prev.findIndex((board) => board.id === id)
             prev[index] = data
@@ -65,7 +80,7 @@ export default function Index() {
         })
     }, [])
 
-    const changeBoardOfTask = useCallback((taskId: string, boardId: string) => {
+    const changeBoardOfTask = useCallback(async (taskId: string, boardId: string) => {
         setTasks((prev) => {
             const modified = prev.map((task) => {
                 if (task.id === taskId) {
@@ -77,6 +92,18 @@ export default function Index() {
             return modified
         })
 
+    }, [])
+
+    const openEditTaskPopup = useCallback((task: TaskItemProps) => {
+        setSelectedTask(task)
+        setOpenEditTask(true)
+    }, [])
+
+    const fetchTasks = useCallback(async () => {
+        fetchTask().then((t) => {
+            setTasks(t || [])
+            setFetched(true)
+        })
     },[])
 
     useEffect(() => {
@@ -84,10 +111,8 @@ export default function Index() {
             setWorkspace(params.id + '')
             fetchBoard().then((d) => {
                 setBoards(d || [])
-                fetchTask().then((t) => {
-                    setTasks(t || [])
-                    setFetched(true)
-                })
+                fetchTasks()
+
             })
 
         }
@@ -95,11 +120,20 @@ export default function Index() {
 
     const contextData: any = useMemo(() => ({
         functions: {
-            createNewBoard, createNewTask, editTask, editBoard,changeBoardOfTask
+            createNewBoard,fetchTasks, createNewTask, editTask, editBoard, changeBoardOfTask, openEditTaskPopup
         }, states: {
-            boards, setBoards, tasks, setTasks, workspace, setWorkspace
+            boards,
+            setBoards,
+            tasks,
+            setTasks,
+            workspace,
+            setWorkspace,
+            selectedTask,
+            setSelectedTask,
+            openEditTask,
+            setOpenEditTask
         }
-    }), [boards, setBoards, createNewBoard, createNewTask, tasks, setTasks, workspace, setWorkspace, editTask, editBoard,changeBoardOfTask])
+    }), [openEditTaskPopup, boards, setBoards, createNewBoard, createNewTask,fetchTasks, tasks, setTasks, workspace, setWorkspace, selectedTask, setSelectedTask, editTask, editBoard, changeBoardOfTask, openEditTask, setOpenEditTask])
 
     if (workspace === "") {
         return <Page style={{display: 'flex', alignItems: 'center', justifyContent: "center"}}>
@@ -108,6 +142,6 @@ export default function Index() {
     }
 
     return <HomeContext.Provider value={contextData}>
-        <Home/>
+        <Board/>
     </HomeContext.Provider>
 }

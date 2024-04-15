@@ -4,13 +4,13 @@ body {
 }
 
 .green {
-  background-color: rgba(0, 128, 0, 0.2);
-  color: rgb(0, 87, 0);
+  background-color: rgba(0, 128, 0, 0.2)!important;
+  color: rgb(0, 87, 0)!important;
 }
 
 .blue {
-  background-color: rgba(0, 113, 154, 0.2);
-  color: rgb(0, 71, 97);
+  background-color: rgba(0, 113, 154, 0.2)!important;
+  color: rgb(0, 71, 97) !important;
 }
 
 ::-webkit-scrollbar {

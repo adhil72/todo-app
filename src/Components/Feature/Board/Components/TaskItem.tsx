@@ -5,6 +5,8 @@ import { useContext, useEffect, useRef, useState } from "react";
 import "./TaskItem.css";
 import Paragraph from "@/Components/Common/Paragraph";
 import { HomeContext } from "../../../../../app/[id]/context";
+import EditTaskPopup from "@/Components/Feature/Board/Components/EditTaskPopup";
+import Button from "@/Components/Common/Button";
 export interface TaskItemProps {
     title: string;
     description: string;
@@ -24,7 +26,7 @@ export default function TaskItem(data: TaskItemProps) {
     } = data;
     let ref = useRef(null);
     let editData = { ...data };
-    const { states: { }, functions: { arrangeId1AboveId2, editTask } } = useContext(HomeContext);
+    const { states: { }, functions: { openEditTaskPopup, editTask } } = useContext(HomeContext) as any;
 
 
     const onDragStart = (e: any) => {
@@ -67,13 +69,15 @@ export default function TaskItem(data: TaskItemProps) {
         const board = e.dataTransfer.getData("board");
     }
 
-    return <div onDrop={onDrop} onDragStartCapture={onDragStart} onDragEndCapture={onDragEnd} onDragOverCapture={onDragOver} onDragLeaveCapture={onDragExit} id={id} className="item" ref={ref} draggable style={{ border: "solid 1px",background:"white", borderColor: "lightgrey", borderRadius: "7px", marginTop: "5px", cursor: "grab",transition:"0.3s" }}>
+    return <div onClick={()=>openEditTaskPopup(data)} onDrop={onDrop} onDragStartCapture={onDragStart} onDragEndCapture={onDragEnd} onDragOverCapture={onDragOver} onDragLeaveCapture={onDragExit} id={id} className="item" ref={ref} draggable style={{ border: "solid 1px",background:"white", borderColor: "lightgrey", borderRadius: "7px", marginTop: "5px", cursor: "grab",transition:"0.3s" }}>
         <div style={{ paddingLeft: "20px", paddingRight: "20px", paddingTop: "20px" }}>
-            <Text onChanged={(change) => { editData.title = change; editTask(editData, id + '') }} editable size={1.3} bold={true}>{title.slice(0, 20)}{title.length > 20 ? "..." : ""}</Text>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <Text onChanged={(change) => { editData.title = change; editTask(editData, id + '') }} editable size={1.3} bold={true}>{title.slice(0, 20)}{title.length > 20 ? "..." : ""}</Text>
+            </div>
             <Paragraph onChanged={(change) => { editData.description = change; editTask(editData, boardId + '') }} editable style={{ marginTop: "5px", width: '100%', color: "grey", textJustify: "auto", maxHeight: "50px", overflow: "hidden" }}>{description.slice(0, 40)}{description.length > 40 ? "..." : ""}</Paragraph>
         </div>
         <div style={{ display: "flex", justifyContent: 'space-between', alignItems: 'center', paddingLeft: "20px", paddingRight: "20px", paddingTop: "20px" }}>
-            <div style={{ padding: "5px", fontWeight: "bold", borderRadius: "7px" }} className={tag.split(":::")[0]}>{tag.split(":::")[1]}</div>
+            <Text bold={true} editable style={{ padding: "5px", fontWeight: "bold", borderRadius: "7px" }} className={tag.split(":::")[0]}>{tag.split(":::")[1]}</Text>
             <div style={{ width: "1.5rem", height: "1.5rem", borderRadius: "100%" }} className={theme}></div>
         </div>
         <Divider sx={{ mt: "20px" }} />
