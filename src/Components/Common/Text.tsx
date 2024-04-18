@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
 interface TextProps {
-    children?: React.ReactNode;
-    style?: React.CSSProperties;
-    size?: number;
-    bold?: boolean;
-    color?: string;
-    editable?: boolean;
-    onChanged?: (value: string) => void; // Add the onChanged prop
-    className?: string;
+    children?: React.ReactNode
+    style?: React.CSSProperties
+    size?: number
+    bold?: boolean
+    color?: string
+    editable?: boolean
+    onChanged?: (value: string) => void // Add the onChanged prop
+    className?: string
 }
 
 export default function Text({
@@ -19,31 +19,35 @@ export default function Text({
     color,
     editable = false,
     onChanged, // Add the onChanged prop to the function arguments
-    className
+    className,
 }: TextProps) {
-    const [isEditing, setIsEditing] = useState(false);
-    const [textValue, setTextValue] = useState(children);
+    const [isEditing, setIsEditing] = useState(false)
+    const [textValue, setTextValue] = useState(children)
 
     const handleDoubleClick = () => {
         if (editable) {
-            setIsEditing(true);
+            setIsEditing(true)
         }
-    };
+    }
 
     const handleBlur = () => {
-        setIsEditing(false);
+        setIsEditing(false)
         if (onChanged) {
-            onChanged(textValue + ''); // Call the onChanged prop with the updated textValue
+            onChanged(textValue + '') // Call the onChanged prop with the updated textValue
         }
-    };
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTextValue(e.target.value);
-    };
-
+        setTextValue(e.target.value)
+    }
 
     return (
-        <div style={{ ...style,cursor:editable?"pointer":"default",overflow:"hidden" }} onClick={(e) => { if (editable) e.stopPropagation() }}>
+        <div
+            style={{ ...style, cursor: editable ? 'pointer' : 'default', overflow: 'hidden' }}
+            onClick={(e) => {
+                if (editable) e.stopPropagation()
+            }}
+        >
             {isEditing ? (
                 <input
                     className={className}
@@ -55,13 +59,15 @@ export default function Text({
                         border: 'none',
                         outline: 'none',
                         background: 'none',
-                        width:"fit-content"
+                        width: 'fit-content',
                     }}
                     type="text"
                     value={textValue + ''}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    onKeyUp={(e) => { if (e.key === 'Enter') handleBlur() }}
+                    onKeyUp={(e) => {
+                        if (e.key === 'Enter') handleBlur()
+                    }}
                     autoFocus
                 />
             ) : (
@@ -79,5 +85,5 @@ export default function Text({
                 </span>
             )}
         </div>
-    );
+    )
 }

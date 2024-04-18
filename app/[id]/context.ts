@@ -1,40 +1,62 @@
 import { TaskItemProps } from "@/Components/Feature/Board/Components/TaskItem";
 import { BoardProps } from "@/Components/Feature/Board/Components/TaskPanel";
 import React, { createContext } from "react";
+import { WorkspaceType } from "@/Components/Feature/Workspace/Workspace";
 
 export interface HomeContextType {
-    states: {
-        boards: BoardProps[],
-        setBoards: React.Dispatch<React.SetStateAction<BoardProps[]>>,
-        draggingItem: any,
-        setDraggingItem: React.Dispatch<React.SetStateAction<any>>,
-        workspace: string,
-        setWorkspace: React.Dispatch<React.SetStateAction<string>>
-    },
     functions: {
-        arrangeId1AboveId2: (id1: string, id2: string, boardId: string) => void,
-        createNewBoard: () => void,
-        createNewTask: (boardId: string) => void,
-        editTask: (task: TaskItemProps, boardId: string) => Promise<void>,
-        changeBoardOfTask: (taskId: string, from: string, to: string) => void
-    }
+        createNewBoard: () => void;
+        fetchTasks: () => void;
+        createNewTask: (boardId: string) => void;
+        editTask: (data: TaskItemProps, id: string) => void;
+        editBoard: (id: string, data: BoardProps) => void | Promise<void>;
+        changeBoardOfTask: (taskId: string, boardId: string) => void | Promise<void>;
+        openEditTaskPopup: (task: TaskItemProps) => void;
+    };
+    states: {
+        boards: BoardProps[];
+        setBoards: React.Dispatch<React.SetStateAction<BoardProps[]>>;
+        tasks: TaskItemProps[];
+        setTasks: React.Dispatch<React.SetStateAction<TaskItemProps[]>>;
+        workspace: string;
+        setWorkspace: React.Dispatch<React.SetStateAction<string>>;
+        selectedTask?: TaskItemProps;
+        setSelectedTask: React.Dispatch<React.SetStateAction<TaskItemProps | undefined>>;
+        openEditTask: boolean;
+        setOpenEditTask: React.Dispatch<React.SetStateAction<boolean>>;
+        workspaceData: WorkspaceType;
+        setWorkspaceData: React.Dispatch<React.SetStateAction<WorkspaceType>>;
+    };
 }
 
 const initialState: HomeContextType = {
     functions: {
-        arrangeId1AboveId2: () => { },
         createNewBoard: () => { },
+        fetchTasks: () => { },
         createNewTask: () => { },
-        editTask: async () => { },
-        changeBoardOfTask: () => { }
+        editTask: () => { },
+        editBoard: () => { },
+        changeBoardOfTask: () => { },
+        openEditTaskPopup: () => { }
     },
     states: {
-        draggingItem: 1,
-        setDraggingItem: () => 2,
+        workspaceData: {
+            id: "",
+            description: "",
+            members: [],
+            title: ""
+        },
+        setWorkspaceData: () => { },
         boards: [],
-        setBoards: () => [],
+        setBoards: () => { },
+        tasks: [],
+        setTasks: () => { },
         workspace: "",
-        setWorkspace: () => ""
+        setWorkspace: () => { },
+        selectedTask: undefined,
+        setSelectedTask: () => { },
+        openEditTask: false,
+        setOpenEditTask: () => { }
     }
 }
 

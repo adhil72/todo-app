@@ -1,20 +1,19 @@
-import { auth } from "@/Firebase/config";
+import { auth } from '@/Firebase/config'
 import {
     createUserWithEmailAndPassword,
     sendEmailVerification,
     signInWithEmailAndPassword,
-    updateProfile
-} from "@firebase/auth";
-import { createUserCollection } from "./db";
-
+    updateProfile,
+} from '@firebase/auth'
+import { createUserCollection } from './db'
 
 const signUpService = async (name: string, email: string, password: string) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
     if (!userCredential.user) return null
     await updateProfile(userCredential.user, {
-        displayName: name
-    });
-    await sendEmailVerification(userCredential.user);
+        displayName: name,
+    })
+    await sendEmailVerification(userCredential.user)
     await createUserCollection()
     return userCredential.user
 }
@@ -46,6 +45,5 @@ const getUserDetails = () => {
         })
     })
 }
-
 
 export { signUpService, signInService, isEmailVerified, sendEmailVerificationService, logoutService, getUserDetails }

@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
 interface ParagraphProps {
-    children?: React.ReactNode;
-    style?: React.CSSProperties;
-    size?: number;
-    bold?: boolean;
-    color?: string;
-    editable?: boolean;
-    onChanged?: (value: string) => void; // Add the onChanged prop
+    children?: React.ReactNode
+    style?: React.CSSProperties
+    size?: number
+    bold?: boolean
+    color?: string
+    editable?: boolean
+    onChanged?: (value: string) => void // Add the onChanged prop
 }
 
 export default function Paragraph({
@@ -19,43 +19,42 @@ export default function Paragraph({
     editable = false,
     onChanged, // Add the onChanged prop to the function arguments
 }: ParagraphProps) {
-    const [isEditing, setIsEditing] = useState(false);
-    const [textValue, setTextValue] = useState(children);
+    const [isEditing, setIsEditing] = useState(false)
+    const [textValue, setTextValue] = useState(children)
 
     const handleDoubleClick = () => {
         if (editable) {
-            setIsEditing(true);
+            setIsEditing(true)
         }
-    };
+    }
 
     const handleBlur = () => {
-        setIsEditing(false);
+        setIsEditing(false)
         if (onChanged) {
-            onChanged(textValue + ''); // Call the onChanged prop with the updated textValue
+            onChanged(textValue + '') // Call the onChanged prop with the updated textValue
         }
-    };
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTextValue(e.target.value);
-    };
+        setTextValue(e.target.value)
+    }
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Enter') {
-                handleBlur();
+                handleBlur()
             }
-        };
+        }
 
-        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keydown', handleKeyDown)
 
         return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [isEditing]);
-
+            document.removeEventListener('keydown', handleKeyDown)
+        }
+    }, [isEditing])
 
     return (
-        <div style={{ ...style,cursor:"text",width:"fit-content" }} onClick={(e) => e.stopPropagation()}>
+        <div style={{ ...style, cursor: 'text', width: 'fit-content' }} onClick={(e) => e.stopPropagation()}>
             {isEditing ? (
                 <input
                     style={{
@@ -81,7 +80,7 @@ export default function Paragraph({
                         color: color,
                         fontSize: `${size}rem`,
                         fontWeight: bold ? 'bold' : 'normal',
-                        width:"fit-content"
+                        width: 'fit-content',
                     }}
                     onDoubleClick={handleDoubleClick}
                 >
@@ -89,5 +88,5 @@ export default function Paragraph({
                 </div>
             )}
         </div>
-    );
+    )
 }

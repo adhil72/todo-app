@@ -1,15 +1,15 @@
-import {collection, doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
-import {auth, db} from "./config";
-import {WorkspaceType} from "@/Components/Feature/Workspace/Workspace";
-import {BoardProps} from "@/Components/Feature/Board/Components/TaskPanel";
+import { collection, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
+import { auth, db } from './config'
+import { WorkspaceType } from '@/Components/Feature/Workspace/Workspace'
+import { BoardProps } from '@/Components/Feature/Board/Components/TaskPanel'
 
 let edited = false
 let syncing = false
 
 const fetchWorkSpace = async () => {
-    let pb = document.getElementById("pb")
+    let pb = document.getElementById('pb')
     let data = []
-    if (pb) pb.style.display = "block"
+    if (pb) pb.style.display = 'block'
     if (!auth.currentUser) return
     const usersCollection = collection(db, 'users')
     const userDoc = doc(usersCollection, auth.currentUser.uid)
@@ -22,18 +22,18 @@ const fetchWorkSpace = async () => {
             data = userData.workspace
         }
     }
-    if (pb) pb.style.display = "none"
+    if (pb) pb.style.display = 'none'
     return data
 }
 
 const saveWorkspace = async (workspaceData: WorkspaceType[]) => {
-    let pb = document.getElementById("pb")
-    if (pb) pb.style.display = "block"
+    let pb = document.getElementById('pb')
+    if (pb) pb.style.display = 'block'
     if (!auth.currentUser) return
     const usersCollection = collection(db, 'users')
     const userDoc = doc(usersCollection, auth.currentUser.uid)
-    await updateDoc(userDoc, {workspace: workspaceData})
-    if (pb) pb.style.display = "none"
+    await updateDoc(userDoc, { workspace: workspaceData })
+    if (pb) pb.style.display = 'none'
     return
 }
 
@@ -42,13 +42,13 @@ const createUserCollection = async () => {
     await auth.currentUser.reload()
     const usersCollection = collection(db, 'users')
     const userDoc = doc(usersCollection, auth.currentUser.uid)
-    await setDoc(userDoc, {workspace: [], board: [], tasks: []})
+    await setDoc(userDoc, { workspace: [], board: [], tasks: [] })
 }
 
 const fetchBoard = async () => {
-    let pb = document.getElementById("pb")
+    let pb = document.getElementById('pb')
     let data: BoardProps[] = []
-    if (pb) pb.style.display = "block"
+    if (pb) pb.style.display = 'block'
     if (!auth.currentUser) return
     const usersCollection = collection(db, 'users')
     const userDoc = doc(usersCollection, auth.currentUser.uid)
@@ -61,36 +61,36 @@ const fetchBoard = async () => {
             data = userData.board
         }
     }
-    if (pb) pb.style.display = "none"
+    if (pb) pb.style.display = 'none'
     return data
 }
 
 const saveBoard = async (board: any[]) => {
-    let pb = document.getElementById("pb")
-    if (pb) pb.style.display = "block"
+    let pb = document.getElementById('pb')
+    if (pb) pb.style.display = 'block'
     if (!auth.currentUser) return
     const usersCollection = collection(db, 'users')
     const userDoc = doc(usersCollection, auth.currentUser.uid)
-    await updateDoc(userDoc, {board: board})
-    if (pb) pb.style.display = "none"
+    await updateDoc(userDoc, { board: board })
+    if (pb) pb.style.display = 'none'
     return
 }
 
 const saveTask = async (tasks: any[]) => {
-    let pb = document.getElementById("pb")
-    if (pb) pb.style.display = "block"
+    let pb = document.getElementById('pb')
+    if (pb) pb.style.display = 'block'
     if (!auth.currentUser) return
     const usersCollection = collection(db, 'users')
     const userDoc = doc(usersCollection, auth.currentUser.uid)
-    await updateDoc(userDoc, {tasks: tasks})
-    if (pb) pb.style.display = "none"
+    await updateDoc(userDoc, { tasks: tasks })
+    if (pb) pb.style.display = 'none'
     return
 }
 
 const fetchTask = async () => {
-    let pb = document.getElementById("pb")
+    let pb = document.getElementById('pb')
     let data: any[] = []
-    if (pb) pb.style.display = "block"
+    if (pb) pb.style.display = 'block'
     if (!auth.currentUser) return
     const usersCollection = collection(db, 'users')
     const userDoc = doc(usersCollection, auth.currentUser.uid)
@@ -103,8 +103,8 @@ const fetchTask = async () => {
             data = userData.tasks
         }
     }
-    if (pb) pb.style.display = "none"
+    if (pb) pb.style.display = 'none'
     return data
 }
 
-export {fetchWorkSpace, createUserCollection, saveWorkspace, fetchBoard, saveBoard, fetchTask, saveTask}
+export { fetchWorkSpace, createUserCollection, saveWorkspace, fetchBoard, saveBoard, fetchTask, saveTask }
