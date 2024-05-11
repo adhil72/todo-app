@@ -64,26 +64,13 @@ export default function Index() {
         })
     }, [])
 
-    const editTask = useCallback(async (data: TaskItemProps, id: string, async?: boolean) => {
-        if (async) {
-            return new Promise((r) => {
-                setTasks((prev) => {
-                    let index = prev.findIndex((task) => task.id === id)
-                    prev[index] = data
-                    saveTask(prev).then(() => {
-                        r(null)
-                    })
-                    return [...prev]
-                })
-            })
-        } else {
-            setTasks((prev) => {
-                let index = prev.findIndex((task) => task.id === id)
-                prev[index] = data
-                saveTask(prev)
-                return [...prev]
-            })
-        }
+    const editTask = useCallback(async (data: TaskItemProps, id: string) => {
+        setTasks((prev) => {
+            let index = prev.findIndex((task) => task.id === id)
+            prev[index] = data
+            saveTask(prev)
+            return [...prev]
+        })
     }, [])
 
     const editBoard = useCallback(async (id: string, data: BoardProps) => {

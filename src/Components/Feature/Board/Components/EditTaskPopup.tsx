@@ -30,8 +30,7 @@ export default function EditTaskPopup(props: EditTaskPopupProps) {
         }
 
         data.deadline = new Date(data.deadline).toDateString()
-        await editTask(data, task?.id || '')
-        window.location.reload()
+        editTask(data, task?.id || '')
         onClose()
     }
 
